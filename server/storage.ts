@@ -22,6 +22,14 @@ export class MemStorage implements IStorage {
     this.gameResults = new Map();
   }
 
+  private getUUID(): string {
+    if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+      return crypto.randomUUID();
+    }
+    // Fallback simples para ambientes sem crypto
+    return Math.random().toString(36).substring(2) + Date.now().toString(36);
+  }
+
   async getPlayer(id: string): Promise<Player | undefined> {
     return this.players.get(id);
   }
@@ -33,7 +41,7 @@ export class MemStorage implements IStorage {
   }
 
   async createPlayer(insertPlayer: InsertPlayer): Promise<Player> {
-    const id = randomUUID();
+    const id = this.getUUID();
     const player: Player = { 
       ...insertPlayer, 
       id,
@@ -44,7 +52,7 @@ export class MemStorage implements IStorage {
   }
 
   async createGameResult(insertResult: InsertGameResult): Promise<GameResult> {
-    const id = randomUUID();
+    const id = this.getUUID();
     const gameResult: GameResult = { 
       ...insertResult,
       id,
