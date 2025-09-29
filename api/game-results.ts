@@ -5,7 +5,8 @@ import { storage } from '../server/storage';
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method === 'POST') {
     try {
-      const resultData = insertGameResultSchema.parse(req.body);
+      const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+      const resultData = insertGameResultSchema.parse(body);
       const gameResult = await storage.createGameResult(resultData);
       return res.status(200).json(gameResult);
     } catch (error: any) {
