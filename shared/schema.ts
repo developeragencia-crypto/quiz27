@@ -29,6 +29,14 @@ export const insertPlayerSchema = createInsertSchema(players).pick({
   zodiacSign: true,
 });
 
+// Permitir qualquer string para zodiacSign
+export const insertPlayerSchemaAnyZodiac = z.object({
+  name: z.string(),
+  instagram: z.string(),
+  birthdate: z.string(),
+  zodiacSign: z.string(),
+});
+
 export const insertGameResultSchema = createInsertSchema(gameResults).pick({
   playerId: true,
   gameMode: true,
